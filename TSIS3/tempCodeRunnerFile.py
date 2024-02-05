@@ -1,0 +1,2 @@
+owner = ""
+    balance = 0
