@@ -3,7 +3,7 @@ class Prime():
         self.number = number
         
         def filtr(self):
-            if self.number == 1
+            if self.number == 1:
                 return False
             
         
