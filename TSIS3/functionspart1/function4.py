@@ -16,4 +16,4 @@ numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 
 prime_numbers = list(filter(lambda x: is_prime(x), numbers))
 
-print("Prime numbers in the list:", prime_numbers)
+print("Лист простых чисел:", prime_numbers)
