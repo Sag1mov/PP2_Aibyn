@@ -1,1 +1,1 @@
-['Aibyn', 'Amir', 'Alih', 'KAZZZ']
+['Aibyn', 'Amir', 'Alih', 'KAZZZ']['Aibyn', 'Amir', 'Alih', 'KAZZZ']

@@ -13,4 +13,4 @@ for interface in data["interface_status"]:
     description = interface["Description"]
     speed = interface["Speed"]
     mtu = interface["MTU"]
-    print("{:<60}{:<20}{:<10}{:<6}".format(dn, description, speed, mtu))
+    print("{:<60}{:<20}{:<10}{:<10}".format(dn, description, speed, mtu))

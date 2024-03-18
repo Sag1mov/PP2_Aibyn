@@ -1,11 +1,14 @@
 import re
 
-string1 = "This is a sample text with ab at the end."
+string1 = "This is a sample text with ab abob at the end."
 
 
-proverka = r'a.*?b$'
+proverka = r'(a+)(?:)b$'
 
 x = re.findall(proverka, string1)
 
-for y in x:
-    print("Match found:",y)
+for i in x:
+    print(i)
+
+
+

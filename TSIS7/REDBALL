@@ -1,0 +1,140 @@
+import pygame
+
+pygame.init()
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+x = 25
+y = 25
+h = 1050
+w = 650  
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode((h, w))
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    screen.fill(GREEN)
+    pygame.draw.circle(screen, RED, (x, y), 25)
+    pygame.draw.line(screen, (0, 0, 0), (x, y), (x, y))
+    pygame.draw.line(screen, (0, 0, 0), (0, 0), (h-1, 0), 1)
+    pygame.draw.line(screen, (0, 0, 0), (0, 0), (0, w-1), 1)
+    pygame.draw.line(screen, (0, 0, 0), (0, w-1), (h-1, w-1), 1)
+    pygame.draw.line(screen, (0, 0, 0), (h-1, 0), (h-1, w-1), 1)
+
+    pressed = pygame.key.get_pressed()
+    if x + 25 <= h - 1 and y + 25 <= w - 1 and x > 25 and y > 25:
+        if pressed[pygame.K_UP]:
+            y -= 20
+        if pressed[pygame.K_DOWN]:
+            y += 20
+        if pressed[pygame.K_LEFT]:
+            x -= 20
+        if pressed[pygame.K_RIGHT]:
+            x += 20
+
+    elif x + 25 >= h - 1 and y <= 25:
+        if pressed[pygame.K_DOWN]:
+            y += 20
+        if pressed[pygame.K_LEFT]:
+            x -= 20
+    elif x + 25 >= h - 1 and y + 25 >= w - 1:
+        if pressed[pygame.K_UP]:
+            y -= 20
+        if pressed[pygame.K_LEFT]:
+            x -= 20
+    elif x <= 25 and y+25 >= w - 1:
+        if pressed[pygame.K_UP]:
+            y -= 20
+        if pressed[pygame.K_RIGHT]:
+            x += 20
+    elif x <= 25 and y <= 25:
+        if pressed[pygame.K_RIGHT]:
+            x += 20
+        if pressed[pygame.K_DOWN]:
+            y += 20
+
+    elif x <= 25:
+        if pressed[pygame.K_UP]:
+            y -= 20
+        if pressed[pygame.K_DOWN]:
+            y += 20
+        if pressed[pygame.K_RIGHT]:
+            x += 20
+    elif x + 25 > h - 1:
+        if pressed[pygame.K_UP]:
+            y -= 20
+        if pressed[pygame.K_DOWN]:
+            y += 20
+        if pressed[pygame.K_LEFT]:
+            x -= 20
+    elif y <= 25:
+        if pressed[pygame.K_DOWN]:
+            y += 20
+        if pressed[pygame.K_LEFT]:
+            x -= 20
+        if pressed[pygame.K_RIGHT]:
+            x += 20
+    elif y + 25 > w - 1:
+        if pressed[pygame.K_UP]:
+            y -= 20
+        if pressed[pygame.K_LEFT]:
+            x -= 20
+        if pressed[pygame.K_RIGHT]:
+            x += 20
+
+    pygame.display.flip()
+
+    clock.tick(20)
+
+
+# import pygame
+# import sys
+
+# pygame.init()
+
+# screen_width = 800
+# screen_height = 600
+
+# ball_radius = 25
+
+# ball_x = (screen_width - ball_radius * 2) // 2
+# ball_y = (screen_height - ball_radius * 2) // 2
+
+# movement_speed = 20  
+
+
+# white = (255, 255, 255)
+# red = (255, 0, 0)
+
+# screen = pygame.display.set_mode((screen_width, screen_height))
+# pygame.display.set_caption("Moving Ball")
+
+# running = True
+# while running:
+#     screen.fill(white)
+
+#     pygame.draw.circle(screen, red, (ball_x, ball_y), ball_radius)
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
+#         elif event.type == pygame.KEYDOWN:
+#             if event.key == pygame.K_UP:
+#                 if ball_y - movement_speed >= 0:
+#                     ball_y -= movement_speed
+#             elif event.key == pygame.K_DOWN:
+#                 if ball_y + movement_speed <= screen_height - ball_radius * 2:
+#                     ball_y += movement_speed
+#             elif event.key == pygame.K_LEFT:
+#                 if ball_x - movement_speed >= 0:
+#                     ball_x -= movement_speed
+#             elif event.key == pygame.K_RIGHT:
+#                 if ball_x + movement_speed <= screen_width - ball_radius * 2:
+#                     ball_x += movement_speed
+
+
+#     pygame.display.flip()
+
+# pygame.quit()
+# sys.exit()

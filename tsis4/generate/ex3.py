@@ -4,6 +4,6 @@ def myfunc(n):
             yield i
 
 n = int(input())
-list1 = myfunc(n)
+# list1 = myfunc(n)
 list1 = list(myfunc(n))
 print(f"THIS LIST THAT DIvides by3 or 4-> {list1}")

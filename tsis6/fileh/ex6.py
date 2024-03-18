@@ -5,8 +5,10 @@
 #     file.close()
 
 import string
-
+import os
 alphabet = string.ascii_uppercase
+a = '/vs/PP2/A.txt'
+os.remove(a)
 
 for x in alphabet:
     filename = x + ".txt"
