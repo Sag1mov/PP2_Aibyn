@@ -1,6 +1,7 @@
 import pygame 
-import os
 import random
+import time
+import os
 pygame.init()
 
 W, H = 1200, 800
@@ -16,6 +17,7 @@ paddleW = 150
 paddleH = 25
 paddleSpeed = 20
 paddle = pygame.Rect(W // 2 - paddleW // 2, H - paddleH - 30, paddleW, paddleH)
+
 
 # Ball
 ballRadius = 20
@@ -35,7 +37,7 @@ game_score_rect.center = (210, 20)
 collision_sound = pygame.mixer.Sound(os.path.join("TSIS8", "audio", "catch.mp3"))
 
 # Additional parameters
-unbreakable_chance = 0.2  # Chance for a brick to be unbreakable
+unbreakable_chance = 0.05  # Chance for a brick to be unbreakable
 bonus_chance = 0.2  # Chance for a block to give a bonus
 bonus_speed_increase = 2  # Speed increase bonus for the ball
 
@@ -58,7 +60,7 @@ def detect_collision(dx, dy, ball, rect):
     return dx, dy
 
 # Block settings
-block_list = [(pygame.Rect(10 + 120 * i, 50 + 70 * j, 100, 50), random.random() > unbreakable_chance) for i in range(10) for j in range(4)]
+block_list = [(pygame.Rect(10 + 120 * i, 50 + 70 * j, 100, 50), random.random() > unbreakable_chance, random.random() < bonus_chance) for i in range(10) for j in range(4)]
 color_list = [(random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)) for i in range(10) for j in range(4)] 
 
 # Game over Screen
@@ -73,17 +75,34 @@ wintext = winfont.render('You win yay', True, (0, 0, 0))
 wintextRect = wintext.get_rect()
 wintextRect.center = (W // 2, H // 2)
 
+bonus_time = 0.5
+is_bonus = False
+
+def bonus_timer(dt,bonus_time,is_bonus): 
+    if is_bonus:
+        bonus_time -= dt
+        if bonus_time <= 0:
+            is_bonus = False
+            bonus_time = 1
+        print(ballSpeed)
+    return bonus_time,is_bonus
+
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+    
+    dt = clock.tick(FPS) / 1000
 
     screen.fill(bg)
     
     # Drawing blocks
-    for idx, (block, breakable) in enumerate(block_list):
+    for idx, (block, breakable,bonus) in enumerate(block_list):
         if breakable:
             pygame.draw.rect(screen, color_list[idx], block)
+        elif bonus:
+            #draw bonus blocks with white border
+            pygame.draw.rect(screen, (255, 255, 255), block)
         else:
             pygame.draw.rect(screen, (100, 100, 100), block)  # Unbreakable blocks
 
@@ -105,22 +124,29 @@ while not done:
         dx, dy = detect_collision(dx, dy, ball, paddle)
 
     # Collision blocks
-    for idx, (block, breakable) in enumerate(block_list):
+    for idx, (block, breakable,bonus) in enumerate(block_list):
         if ball.colliderect(block):
             if breakable:
                 block_list.pop(idx)
                 color_list.pop(idx)
                 dx, dy = detect_collision(dx, dy, ball, block)
                 game_score += 1
+                paddle[2] -= 4
+                paddleSpeed += 0.25
+
                 collision_sound.play()
 
                 # Bonus
-                if random.random() < bonus_chance:
+                if bonus:
                     ballSpeed += bonus_speed_increase  # Increase ball speed
+                    print(ballSpeed)
+                    is_bonus = True
 
             else:
                 dx, dy = detect_collision(dx, dy, ball, block)
 
+    # Bonus timer
+    bonus_time,is_bonus = bonus_timer(dt,bonus_time,is_bonus)
     # Game score
     game_score_text = game_score_fonts.render(f'Your game score is: {game_score}', True, (255, 255, 255))
     screen.blit(game_score_text, game_score_rect)
@@ -139,6 +165,6 @@ while not done:
         paddle.left -= paddleSpeed
     if key[pygame.K_RIGHT] and paddle.right < W:
         paddle.right += paddleSpeed
-
     pygame.display.flip()
     clock.tick(FPS)
+
